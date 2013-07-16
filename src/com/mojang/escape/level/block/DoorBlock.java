@@ -25,6 +25,8 @@ public class DoorBlock extends SolidBlock {
 	public void tick() {
 		super.tick();
 		
+		this.ceilCol = this.level.getColor();
+		this.col = this.level.getColor();
 		if (open) openness += 0.2;
 		else openness -= 0.2;
 		if (openness < 0) openness = 0;

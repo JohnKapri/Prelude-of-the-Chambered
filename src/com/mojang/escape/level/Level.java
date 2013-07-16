@@ -25,6 +25,8 @@ public abstract class Level {
 	protected int wallTex = 0;
 	protected int floorTex = 0;
 	protected int ceilTex = 0;
+	
+	protected int ticks;
 
 	public List<Entity> entities = new ArrayList<Entity>();
 	protected Game game;
@@ -140,6 +142,9 @@ public abstract class Level {
 		if (col == 0x1A2108) return new Block();
 		if (col == 0x00C2A7) return new FinalUnlockBlock();
 		if (col == 0x000056) return new WinBlock();
+		
+		if (col == 0x00AAFF) return new SolidColoredBlock();
+		if (col == 0xAAFF00) return new ColoredCeilBlock();
 
 		return new Block();
 	}
@@ -220,6 +225,10 @@ public abstract class Level {
 	}
 
 	public void tick() {
+		ticks++;
+		
+		wallCol = (int) (Math.sin(((double) ticks) / 1000D) * (double)0xFFFFFF);
+		
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			e.tick();
@@ -277,5 +286,9 @@ public abstract class Level {
 
 	public void showLootScreen(Item item) {
 		game.setMenu(new GotLootMenu(item));
+	}
+	
+	public int getColor() {
+		return wallCol;
 	}
 }

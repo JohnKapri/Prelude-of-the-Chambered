@@ -5,6 +5,9 @@ import com.mojang.escape.level.block.Block;
 public class StartLevel extends Level {
 	public StartLevel() {
 		name = "The Prison";
+		wallCol = 0x00FFFF;
+		floorCol = 0x00FFFF;
+		ceilCol = 0x00FFFF;
 	}
 
 	protected void decorateBlock(int x, int y, Block block, int col) {
@@ -16,8 +19,10 @@ public class StartLevel extends Level {
 	}
 
 	public void switchLevel(int id) {
-		if (id == 1) game.switchLevel("overworld", 1);
-		if (id == 2) game.switchLevel("dungeon", 1);
+		if (id == 1)
+			game.switchLevel("overworld", 1);
+		if (id == 2)
+			game.switchLevel("dungeon", 1);
 	}
 
 	public void getLoot(int id) {

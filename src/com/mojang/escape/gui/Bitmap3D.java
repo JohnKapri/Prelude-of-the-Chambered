@@ -1,14 +1,20 @@
 package com.mojang.escape.gui;
 
-import com.mojang.escape.*;
+import java.util.Random;
+
+import com.mojang.escape.Art;
+import com.mojang.escape.Game;
 import com.mojang.escape.entities.Entity;
 import com.mojang.escape.level.Level;
-import com.mojang.escape.level.block.*;
+import com.mojang.escape.level.block.Block;
+import com.mojang.escape.level.block.DoorBlock;
 
 public class Bitmap3D extends Bitmap {
 	private double[] zBuffer;
 	private double[] zBufferWall;
 	private double xCam, yCam, zCam, rCos, rSin, fov, xCenter, yCenter, rot;
+	
+	private Random rand = new Random();
 
 	public Bitmap3D(int width, int height) {
 		super(width, height);
@@ -66,16 +72,20 @@ public class Bitmap3D extends Bitmap {
 				if (c.solidRender) {
 					if (!e.solidRender) {
 						renderWall(xb + 1, zb + 1, xb + 1, zb, c.tex, c.col);
+						//renderWall(xb + 1, zb + 1, xb + 1, zb, c.tex, rand.nextInt(0xFFFFFF));
 					}
 					if (!s.solidRender) {
-						renderWall(xb, zb + 1, xb + 1, zb + 1, c.tex, (c.col & 0xfefefe) >> 1);
+						renderWall(xb, zb + 1, xb + 1, zb + 1, c.tex, c.col);
+						//renderWall(xb, zb + 1, xb + 1, zb + 1, c.tex, (rand.nextInt(0xFFFFFF) & 0xfefefe) >> 1);
 					}
 				} else {
 					if (e.solidRender) {
 						renderWall(xb + 1, zb, xb + 1, zb + 1, e.tex, e.col);
+						//renderWall(xb + 1, zb, xb + 1, zb + 1, e.tex, rand.nextInt(0xFFFFFF));
 					}
 					if (s.solidRender) {
-						renderWall(xb + 1, zb + 1, xb, zb + 1, s.tex, (s.col & 0xfefefe) >> 1);
+						renderWall(xb + 1, zb + 1, xb, zb + 1, s.tex, s.col);
+						//renderWall(xb + 1, zb + 1, xb, zb + 1, s.tex, (rand.nextInt(0xFFFFFF) & 0xfefefe) >> 1);
 					}
 				}
 			}
@@ -88,13 +98,13 @@ public class Bitmap3D extends Bitmap {
 					Entity e = c.entities.get(j);
 					for (int i = 0; i < e.sprites.size(); i++) {
 						Sprite sprite = e.sprites.get(i);
-						renderSprite(e.x + sprite.x, 0 - sprite.y, e.z + sprite.z, sprite.tex, sprite.col);
+						renderSprite(e.x + sprite.x, 0 - sprite.y, e.z + sprite.z, sprite.tex, Art.getCol(level.getColor()));
 					}
 				}
 
 				for (int i = 0; i < c.sprites.size(); i++) {
 					Sprite sprite = c.sprites.get(i);
-					renderSprite(xb + sprite.x, 0 - sprite.y, zb + sprite.z, sprite.tex, sprite.col);
+					renderSprite(xb + sprite.x, 0 - sprite.y, zb + sprite.z, sprite.tex, Art.getCol(level.getColor()));
 				}
 			}
 		}
